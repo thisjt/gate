@@ -8,9 +8,13 @@
 #define currentPin A0
 
 int status = 0;
-int overloadThreshold = 670;
+int overloadThreshold = 500;
 int overloaded = 0;
 int currentReading = 0;
+
+int32_t sleeptime = 60000;
+int32_t sleeper = sleeptime;
+int sleep = 0;
 
 void setup() {
 	Serial.begin(115200);
@@ -46,6 +50,7 @@ void loop() {
 void openGate() {
   if(status == 1) return;
   status = 1;
+  sleep = 0;
 
   Serial.println("OPEN Gate");
   digitalWrite(openPin, true);
@@ -54,8 +59,15 @@ void openGate() {
 }
 
 void closeGate() {
+  if(sleeper < millis() && status == 0 && !sleep) {
+    sleep = 1;
+    Serial.println("Disengage Gate Relays");
+    stopGate();
+  }
+
   if(status == 0) return;
   status = 0;
+  sleeper = millis() + sleeptime;
 
   Serial.println("CLOSE Gate");
   digitalWrite(openPin, false);
@@ -69,19 +81,3 @@ void stopGate() {
   digitalWrite(closePin, false);
   delay(100);
 }
-
-// void gotoSleep() {
-//   sleep_enable();
-//   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-//   attachInterrupt(digitalPinToInterrupt(2), wakeUp, CHANGE);
-//   attachInterrupt(digitalPinToInterrupt(3), wakeUp, CHANGE);
-//   delay(100);
-//   sleep_cpu();
-// }
-
-// void wakeUp() {
-//   sleep_disable();
-//   detachInterrupt(digitalPinToInterrupt(2));
-//   detachInterrupt(digitalPinToInterrupt(3));
-// }
-
