@@ -8,7 +8,9 @@
 #define currentPin A0
 
 int status = 0;
-int overload = 670;
+int overloadThreshold = 670;
+int overloaded = 0;
+int currentReading = 0;
 
 void setup() {
 	Serial.begin(115200);
@@ -16,14 +18,28 @@ void setup() {
   pinMode(closePin, OUTPUT);
 
   pinMode(remotePin, INPUT_PULLUP);
-  Serial.println("SCRIPT READY");
+  Serial.println("Program Ready");
 }
 
 void loop() {
-  if(digitalRead(remotePin)) {
-    closeGate();
+  if(!overloaded) {
+    if(digitalRead(remotePin)) {
+      closeGate();
+    } else {
+      openGate();
+    }
   } else {
-    openGate();
+    if ((digitalRead(remotePin) && status == 1) || (!digitalRead(remotePin) && status == 0)) {
+      Serial.println("Overload Recovery");
+      overloaded = 0;
+    }
+  }
+
+  currentReading = analogRead(currentPin);
+  if(currentReading < overloadThreshold && !overloaded) {
+    Serial.println("Overload Protection Triggered");
+    overloaded = 1;
+    stopGate();
   }
 }
 
@@ -48,27 +64,24 @@ void closeGate() {
 }
 
 void stopGate() {
-  if(status == 2) return;
-  status = 2;
-
   Serial.println("STOP Gate");
   digitalWrite(openPin, false);
   digitalWrite(closePin, false);
   delay(100);
 }
 
-void gotoSleep() {
-  sleep_enable();
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  attachInterrupt(digitalPinToInterrupt(2), wakeUp, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(3), wakeUp, CHANGE);
-  delay(100);
-  sleep_cpu();
-}
+// void gotoSleep() {
+//   sleep_enable();
+//   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+//   attachInterrupt(digitalPinToInterrupt(2), wakeUp, CHANGE);
+//   attachInterrupt(digitalPinToInterrupt(3), wakeUp, CHANGE);
+//   delay(100);
+//   sleep_cpu();
+// }
 
-void wakeUp() {
-  sleep_disable();
-  detachInterrupt(digitalPinToInterrupt(2));
-  detachInterrupt(digitalPinToInterrupt(3));
-}
+// void wakeUp() {
+//   sleep_disable();
+//   detachInterrupt(digitalPinToInterrupt(2));
+//   detachInterrupt(digitalPinToInterrupt(3));
+// }
 
