@@ -4,16 +4,16 @@ A simple remote-controlled gate opening and closing system.
 
 ## Bill of Materials
 
-| Pcs | Item                   | Notes/Specs                                                     |
-| :-- | :--------------------- | :-------------------------------------------------------------- |
-| 2   | Linear Actuator        | 12V 400 N 25mm/s. Controls the opening/closing of the gate      |
-| 1   | Power Supply           | 220V AC - 12V DC, 16A. Match this based on your actuator specs  |
-| 1   | NodeMCU ESP8266        | Any MCU will do as long as it has 3 GPIO pins and 1 ADC pin     |
-| 1   | 2-Channel Relay Module | 5V. Will be controlled by NodeMCU. Will control the auto relays |
-| 2   | Automotive Relay       | Controls the Linear Actuators                                   |
-| 1   | Buck Converter         | 12V to 5V. Powers the MCU and Relay                             |
-| 1   | Remote Control Module  | 1 Channel only needed                                           |
-| 1   | Project Box            | Must be weatherproof                                            |
+| Pcs | Item                   | Notes/Specs                                                    |
+| :-- | :--------------------- | :------------------------------------------------------------- |
+| 2   | Linear Actuator        | 12V 400 N 25mm/s. Controls the opening/closing of the gate     |
+| 1   | Power Supply           | 220V AC - 12V DC, 16A. Match this based on your actuator specs |
+| 1   | NodeMCU ESP8266        | Any MCU will do as long as it has 3 GPIO pins and 1 ADC pin    |
+| 1   | 2-Channel Relay Module | Will be controlled by NodeMCU. Will control the auto relays    |
+| 2   | Automotive Relay       | Controls the Linear Actuators                                  |
+| 1   | Buck Converter         | 12V to 5V. Powers the MCU and Relay Module                     |
+| 1   | Remote Control Module  | 1 Channel only needed                                          |
+| 1   | Project Box            | Must be weatherproof                                           |
 
 ## Schematic
 
