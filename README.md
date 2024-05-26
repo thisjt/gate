@@ -24,6 +24,14 @@ control circuit as blue and the driver circuit as red.
 
 ### Driver Circuit
 
+The driver circuit is inspired by an H-Bridge Circuit Configuration.
+
+![h bridge configuration inspiration](./images/hbridge.png)
+
+The good thing with using 2 relays instead of 4 is that it will be impossible to have a state where
+both of the left or right side of the switches are active, intitiating a short circuit and damaging
+components in the process.
+
 ### Control Circuit
 
 The control circuit is made up of:
